@@ -1,0 +1,488 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <style>
+    html,
+    body {
+       height: 100%;
+          }
+      body {
+        margin: 0;
+        background: linear-gradient(45deg, #49a09d, #5f2c82);
+        font-family: sans-serif;
+        font-weight: 100;
+      }
+
+      .container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      table {
+        width: 800px;
+        border-collapse: collapse;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      }
+
+      th,
+      td {
+        padding: 15px;
+        background-color: rgba(255,255,255,0.2);
+        color: #fff;
+      }
+
+      th {
+        text-align: left;
+      }
+
+      thead {
+        th{
+          background-color: #55608f;
+        }
+      }
+
+      tbody {
+        tr {
+          &:hover {
+            background-color: rgba(255,255,255,0.3);
+          }
+        }
+        td {
+          position: relative;
+          &:hover {
+            &:before {
+              content: "";
+              position: absolute;
+              left: 0;
+              right: 0;
+              top: -9999px;
+              bottom: -9999px;
+              background-color: rgba(255,255,255,0.2);
+              z-index: -1;
+            }
+          }
+        }
+      }
+         
+  </style>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <title>Edit Doc</title>
+</head>
+
+<body>
+  <div> 
+    <a href="{% url 'download_page' %}">Download PDFs</a>
+  </div>
+  <br>
+  
+  <form action="{% url 'save_edit' %}" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="formGroupExampleInput" class="form-label">UNIVERSITY NAME</label>
+      <input type="text" class="form-control" name="un_name" id="un_name" value="{{ content.un_name }}">
+    </div>
+    <div class="mb-3">
+      <label for="formGroupExampleInput2" class="form-label">FACULTY NAME</label>
+      <input type="text" class="form-control" name="faculty_name" id="formGroupExampleInput2" value="{{ content.faculty_name}}">
+    </div>
+    <!-- for a expriment <input type="text" id="fname" name="fname" value="GANPAT UNIVERSITY" ><br>
+      <input type="text" id="fname" name="fname" value="FACULTY OF ENGINEERING & TECHNOLOGY" >-->
+    <div class="row">
+      <div class="col">
+        <label for="formGroupExampleInput2" class="form-label">Programme</label>
+        <input type="text" class="form-control" name="programme" placeholder="Enter Programme Name" value="{{ content.programme }}" aria-label="Programme Name">
+      </div>
+      <div class="col">
+        <label for="formGroupExampleInput2" class="form-label">Branch/Spec.</label>
+        <input type="text" class="form-control" name="branch" placeholder="Enter Branch/Spec." value="{{ content.branch }}" aria-label="Branch/Spec.">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="formGroupExampleInput2" class="form-label">Semester</label>
+        <input type="text" class="form-control"  name="semester" placeholder="Enter Semester" value="{{ content.semester }}" aria-label="Semester">
+      </div>
+      <div class="col">
+        <label for="formGroupExampleInput2" class="form-label">Version </label>
+        <input type="text" class="form-control" name="version" placeholder="Enter Version" value="{{ content.version }}" aria-label="Version ">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="formGroupExampleInput2" class="form-label">Effective from Academic Year</label>
+        <input type="text" class="form-control" name="effAY" placeholder="Enter Effective from Academic Year" value="{{ content.effective_academic_year }}" aria-label="Academic Year">
+      </div>
+      <div class="col">
+        <label for="formGroupExampleInput2" class="form-label">Effective for the batch Admitted in </label>
+        <input type="text" class="form-control" name="effBA" placeholder="Enter Effective for the batch Admitted in" value="{{ content.effective_for_batch }}" aria-label="batch Admitted">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <label for="formGroupExampleInput2" class="form-label">Subject code</label>
+        <input type="text" class="form-control" name="subcode" placeholder="Enter Subject code" value="{{ content.subject_code }}" aria-label="Semester">
+      </div>
+      <div class="col">
+        <label for="formGroupExampleInput2" class="form-label">Subject Name</label>
+        <input type="text" class="form-control" name="subname" placeholder="Enter Subject Name" value="{{ content.subject_name }}" aria-label="Version ">
+      </div>
+    </div>
+<br>
+    <div>
+      <table style="width:50%">
+        <tr>
+          <th colspan="6">Teaching scheme</th>
+        </tr>
+        <tr>
+          <th>(Per week)</th>
+          <th colspan="2">Lecture(DT)</th>
+          <th colspan="2">Practical(Lab.)</th>
+          <th>Total</th>
+        </tr>
+        <tr>
+          <td> </td>
+          <th>L </th>
+          <th>TU </th>
+          <th>P</th>
+          <th>TW</th>
+          <th> </th>
+        </tr>
+        <tr>
+          <td>Credit </td>
+          <td><input type="number" id="fname" value="{{ content.lecture_credits }}" name="lc" ></td>
+          <td><input type="number" id="fname" value="{{ content.tutorial_credits }}" name="tuc" ></td>
+          <td><input type="number" id="fname" value="{{ content.practical_credits }}" name="pc" > </td>
+          <td><input type="number" id="fname" value="{{ content.twc }}" name='twc' ></td>
+          <td><input type="number" id="fname" value="{{ content.total_credits }}" name='totalc' > </td>
+        </tr>
+        <tr>
+          <td>Hours </td>
+          <td><input type="number" id="fname" value="{{ content.lecture_hours }}" name="lh" ></td>
+          <td><input type="number" id="fname" value="{{ content.tutorial_hours }}" name="tuh" ></td>
+          <td><input type="number" id="fname" value="{{ content.practical_hours }}" name="ph" ></td>
+          <td><input type="number" id="fname" value="{{ content.twh_hours }}" name="twh" ></td>
+          <td><input type="number" id="fname" value="{{ content.total_hours }}" name="totalh" > </td>
+        </tr>
+
+      </table>
+      <br>
+      <table style="width:50%">
+        <tr>
+          <th colspan="4">Examination scheme (Marks)</th>
+
+        </tr>
+        <tr>
+          <td> </td>
+          <th>CD </th>
+          <th>SEE</th>
+          <th>Total</th>
+        </tr>
+        <tr>
+          <td>Theory </td>
+          <td><input type="number" id="fname" value="{{ content.ce_theory }}" name="cet" > </td>
+          <td><input type="number" id="fname" value="{{ content.see_theory }}" name="seet" ></td>
+          <td><input type="number" id="fname" value="{{ content.total_theory }}" name="totalt" ></td>
+        </tr>
+        <tr>
+          <td>Practical </td>
+          <td><input type="number" id="fname" value="{{ content.ce_practical }}" name="cep" ></td>
+          <td><input type="number" id="fname" value="{{ content.see_practical }}" name="seep" ></td>
+          <td><input type="number" id="fname" value="{{ content.total_practical }}" name="totalp" ></td>
+        </tr>
+      </table>
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="formGroupExampleInput" class="form-label">Pre-requisites:</label>
+      <input type="text" class="form-control" name="prereq" id="formGroupExampleInput" placeholder="Pre-requisites:" value="{{ content.pre_requsites }}">
+  
+  </div>
+
+ <br>
+    <table style="width: 100%;">
+      <tr>
+        <td style="vertical-align: top;"> Objectives of the course:</td>
+          <td id="Objectives of the course">
+            {% for obj in objs  %}
+              <input type="text" name="objective{{forloop.counter0}}" id="Add Objectives of the course" value="{{ obj }}" size="80%" /><br><br>
+            {% endfor %}
+          </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" id="add Objectives of the course" value="Add Objectives of the course" />
+          <input type="hidden" id="obj_num" name="num_of_obj" value="{{ content.num_of_obj }}">
+        </td>
+      </tr>
+    </table>
+    <br>
+  <table id="units" style="width:100%">
+    <tr>
+      <th colspan="4">Theory syllabus:</th>
+    </tr>
+    <tr>
+      <th>Content</th>
+      <th>Hrs</th>
+    </tr>
+    <tr>
+      {% for unit in units %}
+        <td><input type="text" id="fname" name="content{{forloop.counter0}}" value="{{unit}}"></td>
+      {% endfor %}
+      {% for hour in hours %}
+        <td><input type="text" id="fname" name="hrs{{forloop.counter0}}" value="{{hour}}"></td>
+      {% endfor %}
+    </tr>
+    <tr>
+      <td>
+      <input type="button" id="addUnit" value="New Unit" />
+      <input type="hidden" id="unit_num" name="num_of_unit" value="{{content.num_of_unit}}">
+    </td>
+    </tr>
+  </table>
+  <br><br>
+  Practical content:
+
+    <table style="width: 100%;">
+      <tr>
+        <td style="vertical-align: top;"> Practical content:</td>
+        <td id="Practical content">
+          {% for prac in pracs %}
+            <input type="text" id="Practical content" name="practical{{forloop.counter0}}" size="80%" value="{{prac}}" /><br>
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" id="add Practical content" value="Practical content" />
+          <input type="hidden" id="prac_num" name="num_of_prac" value="{{content.num_of_prac}}">
+        </td>
+      </tr>
+    </table>
+  <br>
+  Text Book:
+
+    <table style="width: 100%;">
+      <tr>
+        <td style="vertical-align: top;"> Text Book:</td>
+        <td id="Text Book">
+          {% for text in texts %}
+            <input type="text" id="Text Book" name="textbook{{forloop.counter0}}" size="80%" value="{{text}}" /><br>
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" id="add Text Book" value="Text Book" />
+          <input type="hidden" id="text_num" name="num_of_text" value="{{content.num_of_text}}">
+        </td>
+      </tr>
+    </table>
+
+  <br>
+  Reference Books:
+
+    <table style="width: 100%;">
+      <tr>
+        <td style="vertical-align: top;"> Reference Book:</td>
+        <td id="Reference Books">
+          {% for ref in refs %}
+            <input type="text" id="Reference Books" name="referencebook{{forloop.counter0}}" size="80%" value="{{ref}}"/><br>
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" id="add Reference Books" value="Reference Books" />
+          <input type="hidden" id="ref_num" name="num_of_ref" value="{{content.num_of_ref}}">
+        </td>
+      </tr>
+        
+    </table>
+
+  <br>
+  ICT/MOOCs Reference:
+
+    <table style="width: 100%;">
+      <tr>
+        <td style="vertical-align: top;"> Text Book:</td>
+        <td id="ICT/MOOCs Reference">
+          {% for mooc in moocs %}
+            <input type="text" id="ICT/MOOCs Reference" name="mooc{{forloop.counter0}}" size="80%" value="{{mooc}}"/><br>
+          {% endfor %}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input type="button" id="add ICT/MOOCs Reference" value="ICT/MOOCs Reference" />
+          <input type="hidden" id="mooc_num" name="num_of_mooc" value="{{content.num_of_mooc}}">
+        </td>
+      </tr>
+    </table>
+<br>
+  Course Outcomes:
+    <table style="width: 100%;">
+      <tr>
+        <td style="vertical-align: top;"> Course Outcomes:</td>
+        <td id="Course Outcomes">
+          <input type="text" name="CO1" value="{{content.CO1}}" size="80%" /> <br><br>
+          <input type="text" name="CO2" value="{{content.CO2}}" size="80%" /> <br><br>
+          <input type="text" name="CO3" value="{{content.CO3}}" size="80%" /> <br><br>
+          <input type="text" name="CO4" value="{{content.CO4}}" size="80%" /> <br><br>
+          <input type="text" name="CO5" value="{{content.CO5}}" size="80%" /> <br><br>
+          <input type="text" name="CO6" value="{{content.CO6}}" size="80%" />
+        </td>
+      </tr>
+    </table>
+
+  Mapping of CO and PO:
+  <table style="width:10%">
+    <tr>
+      <th colspan="4">Examination scheme (Marks)</th>
+
+    </tr>
+    <tr>
+      <td> COs</td>
+      <th>PO1 </th>
+      <th>PO2</th>
+      <th>PO3</th>
+      <th>PO4 </th>
+      <th>PO5 </th>
+      <th>PO6 </th>
+      <th>PO7 </th>
+      <th>PO8 </th>
+      <th>PO9 </th>
+      <th>PO10 </th>
+      <th>PO11 </th>
+      <th>PO12</th>
+    </tr>
+    <tr>
+      <td>CO1 </td>
+      <td><input type="text" id="fname" name="C1P1"  value="{{content.C1P1}}"> </td>
+      <td><input type="text" id="fname" name="C1P2"  value="{{content.C1P2}}"></td>
+      <td><input type="text" id="fname" name="C1P3"  value="{{content.C1P3}}"></td>
+      <td><input type="text" id="fname" name="C1P4"  value="{{content.C1P4}}"></td>
+      <td><input type="text" id="fname" name="C1P5"  value="{{content.C1P5}}"></td>
+      <td><input type="text" id="fname" name="C1P6"  value="{{content.C1P6}}"></td>
+      <td><input type="text" id="fname" name="C1P7"  value="{{content.C1P7}}"></td>
+      <td><input type="text" id="fname" name="C1P8"  value="{{content.C1P8}}"></td>
+      <td><input type="text" id="fname" name="C1P9"  value="{{content.C1P9}}"></td>
+      <td><input type="text" id="fname" name="C1P10" value="{{content.C1P10}}" ></td>
+      <td><input type="text" id="fname" name="C1P11" value="{{content.C1P11}}" ></td>
+      <td><input type="text" id="fname" name="C1P12" value="{{content.C1P12}}" ></td>
+    </tr>
+    <tr>
+      <td> CO2 </td>
+      <td><input type="text" id="fname" name="C2P1"  value="{{content.C2P1}}" ></td>
+      <td><input type="text" id="fname" name="C2P2"  value="{{content.C2P2}}" ></td>
+      <td><input type="text" id="fname" name="C2P3"  value="{{content.C2P3}}" ></td>
+      <td><input type="text" id="fname" name="C2P4"  value="{{content.C2P4}}" ></td>
+      <td><input type="text" id="fname" name="C2P5"  value="{{content.C2P5}}" ></td>
+      <td><input type="text" id="fname" name="C2P6"  value="{{content.C2P6}}" ></td>
+      <td><input type="text" id="fname" name="C2P7"  value="{{content.C2P7}}" ></td>
+      <td><input type="text" id="fname" name="C2P8"  value="{{content.C2P8}}" ></td>
+      <td><input type="text" id="fname" name="C2P9"  value="{{content.C2P9}}" ></td>
+      <td><input type="text" id="fname" name="C2P10" value="{{content.C2P10}}" ></td>
+      <td><input type="text" id="fname" name="C2P11" value="{{content.C2P11}}" ></td>
+      <td><input type="text" id="fname" name="C2P12" value="{{content.C2P12}}" ></td>
+
+    </tr>
+    <tr>
+      <td> CO3 </td>
+      <td><input type="text" id="fname" name="C3P1"  value="{{content.C3P1}}" ></td>
+      <td><input type="text" id="fname" name="C3P2"  value="{{content.C3P2}}" ></td>
+      <td><input type="text" id="fname" name="C3P3"  value="{{content.C3P3}}" ></td>
+      <td><input type="text" id="fname" name="C3P4"  value="{{content.C3P4}}" ></td>
+      <td><input type="text" id="fname" name="C3P5"  value="{{content.C3P5}}" ></td>
+      <td><input type="text" id="fname" name="C3P6"  value="{{content.C3P6}}" ></td>
+      <td><input type="text" id="fname" name="C3P7"  value="{{content.C3P7}}" ></td>
+      <td><input type="text" id="fname" name="C3P8"  value="{{content.C3P8}}" ></td>
+      <td><input type="text" id="fname" name="C3P9"  value="{{content.C3P9}}" ></td>
+      <td><input type="text" id="fname" name="C3P10" value="{{content.C3P10}}" ></td>
+      <td><input type="text" id="fname" name="C3P11" value="{{content.C3P11}}" ></td>
+      <td><input type="text" id="fname" name="C3P12" value="{{content.C3P12}}" ></td>
+
+    </tr>
+    <tr>
+      <td> CO4</td>
+      <td><input type="text" id="fname" name="C4P1"  value="{{content.C4P1}}" ></td>
+      <td><input type="text" id="fname" name="C4P2"  value="{{content.C4P2}}" ></td>
+      <td><input type="text" id="fname" name="C4P3"  value="{{content.C4P3}}" ></td>
+      <td><input type="text" id="fname" name="C4P4"  value="{{content.C4P4}}" ></td>
+      <td><input type="text" id="fname" name="C4P5"  value="{{content.C4P5}}" ></td>
+      <td><input type="text" id="fname" name="C4P6"  value="{{content.C4P6}}" ></td>
+      <td><input type="text" id="fname" name="C4P7"  value="{{content.C4P7}}" ></td>
+      <td><input type="text" id="fname" name="C4P8"  value="{{content.C4P8}}" ></td>
+      <td><input type="text" id="fname" name="C4P9"  value="{{content.C4P9}}" ></td>
+      <td><input type="text" id="fname" name="C4P10" value="{{content.C4P10}}" ></td>
+      <td><input type="text" id="fname" name="C4P11" value="{{content.C4P11}}" ></td>
+      <td><input type="text" id="fname" name="C4P12" value="{{content.C4P12}}" ></td>
+    </tr>
+    <tr>
+      <td> CO5</td>
+      <td><input type="text" id="fname" name="C5P1"  value="{{content.C5P1}}" ></td>
+      <td><input type="text" id="fname" name="C5P2"  value="{{content.C5P2}}" ></td>
+      <td><input type="text" id="fname" name="C5P3"  value="{{content.C5P3}}" ></td>
+      <td><input type="text" id="fname" name="C5P4"  value="{{content.C5P4}}" ></td>
+      <td><input type="text" id="fname" name="C5P5"  value="{{content.C5P5}}" ></td>
+      <td><input type="text" id="fname" name="C5P6"  value="{{content.C5P6}}" ></td>
+      <td><input type="text" id="fname" name="C5P7"  value="{{content.C5P7}}" ></td>
+      <td><input type="text" id="fname" name="C5P8"  value="{{content.C5P8}}" ></td>
+      <td><input type="text" id="fname" name="C5P9"  value="{{content.C5P9}}" ></td>
+      <td><input type="text" id="fname" name="C5P10" value="{{content.C5P10}}" ></td>
+      <td><input type="text" id="fname" name="C5P11" value="{{content.C5P11}}" ></td>
+      <td><input type="text" id="fname" name="C5P12" value="{{content.C5P12}}" ></td>
+    </tr>
+    <tr>
+      <td> CO6</td>
+      <td><input type="text" id="fname" name="C6P1"  value="{{content.C6P1}}" ></td>
+      <td><input type="text" id="fname" name="C6P2"  value="{{content.C6P2}}" ></td>
+      <td><input type="text" id="fname" name="C6P3"  value="{{content.C6P3}}" ></td>
+      <td><input type="text" id="fname" name="C6P4"  value="{{content.C6P4}}" ></td>
+      <td><input type="text" id="fname" name="C6P5"  value="{{content.C6P5}}" ></td>
+      <td><input type="text" id="fname" name="C6P6"  value="{{content.C6P6}}" ></td>
+      <td><input type="text" id="fname" name="C6P7"  value="{{content.C6P7}}" ></td>
+      <td><input type="text" id="fname" name="C6P8"  value="{{content.C6P8}}" ></td>
+      <td><input type="text" id="fname" name="C6P9"  value="{{content.C6P9}}" ></td>
+      <td><input type="text" id="fname" name="C6P10" value="{{content.C6P10}}" ></td>
+      <td><input type="text" id="fname" name="C6P11" value="{{content.C6P11}}" ></td>
+      <td><input type="text" id="fname" name="C6P12" value="{{content.C6P12}}" ></td>
+    </tr>
+  </table>
+  <input type="hidden" name="filename" value="{{content.filename}}">
+  <input type="submit">
+  </form>
+  <!--<form name="Objectives of the course" onsubmit="return validateForm()">
+      <div class="mb-3">
+          <label for="Objectives of the course" class="form-label">Objectives of the course</label>
+          <input id="Objectives of the course" type="text" class="form-control" id="Objectives of the course" placeholder="Objectives of the course">
+          <button type="button" id="add Objectives of the course" class="btn btn-primary">Add</button>
+      </div>
+    </form> -->
+
+  <!-- Optional JavaScript; choose one of the two! -->
+  <script src="{% static 'course/addrow.js' %}"></script><!-- add a Row-->
+  <!-- Option 1: Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <!-- Option 2: Separate Popper and Bootstrap JS -->
+  <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    -->
+</body>
+
+</html>
