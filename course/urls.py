@@ -6,4 +6,5 @@ urlpatterns = [
     path('download_pdf\<str:fname>',views.download,name="download_pdf"),
     path("editpage\<str:fname>",views.edit_page,name="edit_page"),
     path("save_edit",views.save_edit,name="save_edit"),
+    path("delete\<str:fname>",views.delete,name="delete")
 ]
